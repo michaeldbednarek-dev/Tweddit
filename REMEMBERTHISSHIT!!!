@@ -1,0 +1,14 @@
+this to run RabbitMQ
+    docker run -d --hostname rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3-management
+
+this to stop RabbitMQ
+    docker stop <container_id>
+
+
+This is the mongoDB image with the correct adresses
+
+	Tweet service
+	docker run -d --name mongodb -p 27017:27017 mongo:latest
+
+	Subreddit service
+	docker run -d --name mongodb -p 27018:27018 mongo:latest

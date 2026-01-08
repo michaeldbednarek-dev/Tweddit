@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notifservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notifservice
+  template:
+    metadata:
+      labels:
+        app: notifservice
+    spec:
+      containers:
+        - name: notifservice
+          image: drayma/tweddit-notifiservice:latest  # remember 2 spaces or crash!1!
+          imagePullPolicy: Always 
+          ports:
+            - containerPort: 5002
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: notifservice
+spec:
+  selector:
+    app: notifservice
+  ports:
+    - protocol: TCP
+      port: 5002
+      targetPort: 5002
+  type: ClusterIP

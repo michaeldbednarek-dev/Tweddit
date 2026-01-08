@@ -1,0 +1,40 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.25.1
+# ignores vulnerabilities until expiry date; change duration by modifying expiry date
+ignore:
+  SNYK-JS-NANOID-8492085:
+    - '*':
+        reason: None Given
+        expires: 2026-01-09T12:54:24.659Z
+        created: 2024-12-10T12:54:24.662Z
+  SNYK-DOTNET-MICROSOFTASPNETCOREWEBSOCKETS-72891:
+    - '*':
+        reason: None Given
+        expires: 2026-01-09T13:03:30.071Z
+        created: 2024-12-10T13:03:30.077Z
+  SNYK-DOTNET-MICROSOFTASPNETCOREWEBSOCKETS-72898:
+    - '*':
+        reason: None Given
+        expires: 2026-01-09T13:03:47.144Z
+        created: 2024-12-10T13:03:47.150Z
+  SNYK-DOTNET-NEWTONSOFTJSON-2774678:
+    - '*':
+        reason: None Given
+        expires: 2026-01-09T13:03:59.493Z
+        created: 2024-12-10T13:03:59.498Z
+  SNYK-DOTNET-SYSTEMTEXTENCODINGSWEB-1253267:
+    - '*':
+        reason: None Given
+        expires: 2026-01-09T13:04:39.569Z
+        created: 2024-12-10T13:04:39.574Z
+  SNYK-DOTNET-SYSTEMNETWEBSOCKETSWEBSOCKETPROTOCOL-7289:
+    - '*':
+        reason: None Given
+        expires: 2026-01-09T13:04:19.886Z
+        created: 2024-12-10T13:04:19.891Z
+  SNYK-DOTNET-SYSTEMNETWEBSOCKETSWEBSOCKETPROTOCOL-72894:
+    - '*':
+        reason: None Given
+        expires: 2026-01-09T13:04:14.802Z
+        created: 2024-12-10T13:04:14.807Z
+patch: {}

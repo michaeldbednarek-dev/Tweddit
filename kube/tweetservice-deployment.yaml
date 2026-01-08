@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tweetservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tweetservice
+  template:
+    metadata:
+      labels:
+        app: tweetservice
+    spec:
+      containers:
+        - name: tweetservice
+          image: drayma/tweddit-tweetservice:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5001
+          env:                              # Fix the indentation here
+            - name: ASPNETCORE_URLS         # Properly align this
+              value: http://+:5001          # Properly align this
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tweetservice
+spec:
+  selector:
+    app: tweetservice
+  ports:
+    - protocol: TCP
+      port: 5001         # Port accessible within the cluster
+      targetPort: 5001   # The container's exposed port
+      nodePort: 30001    # Fixed NodePort exposed on Minikube
+  type: NodePort          

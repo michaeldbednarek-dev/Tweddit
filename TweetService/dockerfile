@@ -1,0 +1,15 @@
+# Tweet service Dockerfile
+# step 1: Build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+COPY ["TweetService.csproj", "./"]
+RUN dotnet restore "TweetService.csproj"
+COPY . .
+RUN dotnet publish -c Release -o /app/publish
+
+# step 2: Run
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
+WORKDIR /app
+COPY --from=build /app/publish .
+EXPOSE 5001
+ENTRYPOINT ["dotnet", "TweetService.dll"]

@@ -1,0 +1,51 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main  # Trigger on pushes to the 'main' branch
+  pull_request:
+    branches:
+      - main  # Trigger on pull requests to 'main'1
+
+jobs:
+  snyk_test:
+  stage: test
+  image: snyk/snyk-cli
+  script:
+    - snyk auth $SNYK_TOKEN
+    - snyk test
+    - snyk monitor
+  only:
+    - main
+
+  build-and-push:
+    runs-on: self-hosted  # GitHub Actions will run on an Ubuntu runner
+
+    steps:
+    - name: Checkout the repository
+      uses: actions/checkout@v2
+
+    - name: Build Docker image for frontend
+      run: |
+        cd twedditfront
+        docker build --no-cache -t localhost:5000/frontend:latest .
+        docker push localhost:5000/frontend:latest
+    - name: Build Docker image for API Gateway
+      run: |
+        cd ApiGateway
+        docker build --no-cache -t localhost:5000/api-gateway:latest .
+        docker push localhost:5000/api-gateway:latest
+    - name: Build Docker image for tweet service
+      run: |
+        cd TweetService
+        docker build --no-cache -t localhost:5000/tweetservice:latest .
+        docker push localhost:5000/tweetservice:latest
+    - name: Build Docker image for notification service
+      run: |
+        cd NotificationService
+        docker build --no-cache -t localhost:5000/notifiservice:latest .
+        docker push localhost:5000/notifiservice:latest
+    - name: Deploy to kube
+      run: |
+        ./deploy-to-minikube.ps1

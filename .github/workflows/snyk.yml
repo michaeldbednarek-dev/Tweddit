@@ -1,0 +1,82 @@
+name: Snyk Security Test
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  snyk:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # -----------------------
+      # For Vue.js Project (frontend)
+      # -----------------------
+      - name: Install dependencies for Vue.js
+        run: |
+          cd twedditfront
+          npm install
+
+      - name: Install Snyk CLI
+        run: |
+          cd twedditfront
+          npm install -g snyk
+
+      - name: Run Snyk test for Vue.js
+        run: |
+          cd twedditfront
+          snyk test
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+      - name: Monitor Vue.js project
+        run: |
+          cd twedditfront
+          snyk monitor
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+      # -----------------------
+      # For .NET Projects
+      # -----------------------
+      - name: Run Snyk test for TweetService
+        run: |
+          cd TweetService
+          snyk test
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+      - name: Run Snyk test for NotificationService
+        run: |
+          cd NotificationService
+          snyk test
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+      # -----------------------
+      # For Java Projects
+      # -----------------------
+      - name: Install JDK for Java projects
+        uses: actions/setup-java@v2
+        with:
+          java-version: '19' # Specify the Java version you want to use
+          distribution: 'temurin' # Specify the Java distribution (e.g., temurin, zulu, adopt)
+
+      # Grant execute permissions to mvnw
+      - name: Grant execute permissions for mvnw
+        run: chmod +x identityService/mvnw
+
+      # Run Snyk test for identityService
+      - name: Run Snyk test for identityService
+        run: |
+          cd identityService
+          ./mvnw dependency:tree
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
